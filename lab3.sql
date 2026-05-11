@@ -1,294 +1,306 @@
-mysql> use ecommerce;
-Reading table information for completion of table and column names
-You can turn off this feature to get a quicker startup with -A
+Enter password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 19
+Server version: 8.0.46 MySQL Community Server - GPL
 
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use ecommerce;
 Database changed
 mysql> show tables;
 +---------------------+
 | Tables_in_ecommerce |
 +---------------------+
 | customer            |
-| orders              |
+| demo                |
 | product             |
 +---------------------+
-3 rows in set (0.00 sec)
+3 rows in set (0.05 sec)
 
-mysql> select * from customer;
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address        | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| C101        | Ayesha        | Thane  | ayesha@gmail.com  | Almas          | 4356787534   | 400612  |    0 |        |
-| C102        | Ariba         | Mumbra | ariba@gmail.com   | Zoha Apartment | 2345678906   | 400612  |    0 |        |
-| C103        | Arshiya       | thane  | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-3 rows in set (0.01 sec)
+mysql> select * from demo;
+Empty set (0.01 sec)
 
-mysql> desc customer;
+mysql> desc demo;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | varchar(5)  | NO   | PRI | NULL    |       |
+| name  | varchar(20) | NO   |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> create database aggregation;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> desc products;
 +---------------+--------------+------+-----+---------+-------+
 | Field         | Type         | Null | Key | Default | Extra |
 +---------------+--------------+------+-----+---------+-------+
-| customer_id   | varchar(10)  | NO   | PRI | NULL    |       |
-| customer_name | varchar(10)  | NO   |     | NULL    |       |
-| city          | varchar(10)  | YES  |     | NULL    |       |
-| email         | varchar(20)  | YES  |     | NULL    |       |
-| address       | varchar(100) | YES  |     | NULL    |       |
-| phone_number  | varchar(10)  | NO   |     | NULL    |       |
-| pincode       | varchar(6)   | NO   |     | NULL    |       |
-| bill          | int          | NO   |     | NULL    |       |
-| state         | varchar(10)  | NO   |     | NULL    |       |
+| product_id    | varchar(10)  | NO   | PRI | NULL    |       |
+| product_name  | varchar(20)  | NO   |     | NULL    |       |
+| category      | varchar(20)  | NO   |     | NULL    |       |
+| selling_price | double(12,2) | NO   |     | NULL    |       |
+| orignal_price | double(12,2) | NO   |     | NULL    |       |
+| stock         | int          | NO   |     | NULL    |       |
 +---------------+--------------+------+-----+---------+-------+
-9 rows in set (0.01 sec)
+6 rows in set (0.01 sec)
 
-mysql> update customer set phone_number = '7208226998' where customer_id = 'C101';
-Query OK, 1 row affected (0.02 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
+mysql>  insert into products values('P102','Table','Furniture',8000,7500,14),('P103','Mobaile','Electronics',2000,17000,20),('P104','jeans','Clothing',2000,1500,14),('P105','Webcan','Electronics',6000,5500,13);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
 
-mysql> select * from customer;
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address        | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| C101        | Ayesha        | Thane  | ayesha@gmail.com  | Almas          | 7208226998   | 400612  |    0 |        |
-| C102        | Ariba         | Mumbra | ariba@gmail.com   | Zoha Apartment | 2345678906   | 400612  |    0 |        |
-| C103        | Arshiya       | thane  | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-3 rows in set (0.00 sec)
+mysql> select * from products;
++------------+--------------+-------------+---------------+---------------+-------+
+| product_id | product_name | category    | selling_price | orignal_price | stock |
++------------+--------------+-------------+---------------+---------------+-------+
+| P102       | Table        | Furniture   |       8000.00 |       7500.00 |    14 |
+| P103       | Mobaile      | Electronics |       2000.00 |      17000.00 |    20 |
+| P104       | jeans        | Clothing    |       2000.00 |       1500.00 |    14 |
+| P105       | Webcan       | Electronics |       6000.00 |       5500.00 |    13 |
++------------+--------------+-------------+---------------+---------------+-------+
+4 rows in set (0.00 sec)
 
-mysql> select * from customer where customer_name like '%ya';
-+-------------+---------------+-------+-------------------+---------+--------------+---------+------+--------+
-| customer_id | customer_name | city  | email             | address | phone_number | pincode | bill | state  |
-+-------------+---------------+-------+-------------------+---------+--------------+---------+------+--------+
-| C103        | Arshiya       | thane | arshiya@gmail.com | grace   | 937261234    | 10654   |   10 | mumbai |
-+-------------+---------------+-------+-------------------+---------+--------------+---------+------+--------+
-1 row in set (0.00 sec)
-
-mysql> select * from customer where customer_name like '%yes%';
-+-------------+---------------+-------+------------------+---------+--------------+---------+------+-------+
-| customer_id | customer_name | city  | email            | address | phone_number | pincode | bill | state |
-+-------------+---------------+-------+------------------+---------+--------------+---------+------+-------+
-| C101        | Ayesha        | Thane | ayesha@gmail.com | Almas   | 7208226998   | 400612  |    0 |       |
-+-------------+---------------+-------+------------------+---------+--------------+---------+------+-------+
-1 row in set (0.00 sec)
-
-mysql> select * from customer where customer_name like 'Ar%';
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address        | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| C102        | Ariba         | Mumbra | ariba@gmail.com   | Zoha Apartment | 2345678906   | 400612  |    0 |        |
-| C103        | Arshiya       | thane  | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-2 rows in set (0.00 sec)
-
-mysql> select * from customer where customer_name like 'A____';
-+-------------+---------------+--------+-----------------+----------------+--------------+---------+------+-------+
-| customer_id | customer_name | city   | email           | address        | phone_number | pincode | bill | state |
-+-------------+---------------+--------+-----------------+----------------+--------------+---------+------+-------+
-| C102        | Ariba         | Mumbra | ariba@gmail.com | Zoha Apartment | 2345678906   | 400612  |    0 |       |
-+-------------+---------------+--------+-----------------+----------------+--------------+---------+------+-------+
-1 row in set (0.00 sec)
-
-mysql> select * from customer where address like 'M_____';
-Empty set (0.00 sec)
-
-mysql> select * from customer where city like 'M_____';
-+-------------+---------------+--------+-----------------+----------------+--------------+---------+------+-------+
-| customer_id | customer_name | city   | email           | address        | phone_number | pincode | bill | state |
-+-------------+---------------+--------+-----------------+----------------+--------------+---------+------+-------+
-| C102        | Ariba         | Mumbra | ariba@gmail.com | Zoha Apartment | 2345678906   | 400612  |    0 |       |
-+-------------+---------------+--------+-----------------+----------------+--------------+---------+------+-------+
+mysql> select sum(selling_price) from products;
++--------------------+
+| sum(selling_price) |
++--------------------+
+|           18000.00 |
++--------------------+
 1 row in set (0.01 sec)
 
-mysql> insert into customer values('C104','Arshiya','diva','arshiya@gmail.com','grace','937261234','10654',10,'mumbai'),('C105','mannan','kalyan','mannan@gmail.com','universe','1234567890','400612',10,'goa');
-Query OK, 2 rows affected (0.01 sec)
-Records: 2  Duplicates: 0  Warnings: 0
-
-mysql> select * from customer;
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address        | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| C101        | Ayesha        | Thane  | ayesha@gmail.com  | Almas          | 7208226998   | 400612  |    0 |        |
-| C102        | Ariba         | Mumbra | ariba@gmail.com   | Zoha Apartment | 2345678906   | 400612  |    0 |        |
-| C103        | Arshiya       | thane  | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-| C104        | Arshiya       | diva   | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-| C105        | mannan        | kalyan | mannan@gmail.com  | universe       | 1234567890   | 400612  |   10 | goa    |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-5 rows in set (0.00 sec)
-
-mysql> select * from customer limit 3;
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address        | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| C101        | Ayesha        | Thane  | ayesha@gmail.com  | Almas          | 7208226998   | 400612  |    0 |        |
-| C102        | Ariba         | Mumbra | ariba@gmail.com   | Zoha Apartment | 2345678906   | 400612  |    0 |        |
-| C103        | Arshiya       | thane  | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-3 rows in set (0.00 sec)
-
-mysql> select distinct city from customer;
-+--------+
-| city   |
-+--------+
-| Thane  |
-| Mumbra |
-| diva   |
-| kalyan |
-+--------+
-4 rows in set (0.00 sec)
-
-mysql> select city from customer;
-+--------+
-| city   |
-+--------+
-| Thane  |
-| Mumbra |
-| thane  |
-| diva   |
-| kalyan |
-+--------+
-5 rows in set (0.00 sec)
-
-mysql> desc product;
-+-----------------+---------------+------+-----+---------+-------+
-| Field           | Type          | Null | Key | Default | Extra |
-+-----------------+---------------+------+-----+---------+-------+
-| product_id      | varchar(5)    | NO   | PRI | NULL    |       |
-| product_name    | varchar(10)   | YES  |     | NULL    |       |
-| category        | varchar(15)   | YES  |     | NULL    |       |
-| sub_category    | varchar(15)   | YES  |     | NULL    |       |
-| oringinal_price | decimal(10,0) | YES  |     | NULL    |       |
-| selling_price   | decimal(10,0) | YES  |     | NULL    |       |
-| stock           | varchar(10)   | YES  |     | NULL    |       |
-+-----------------+---------------+------+-----+---------+-------+
-7 rows in set (0.01 sec)
-
-mysql> select * from customer;
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address        | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| C101        | Ayesha        | Thane  | ayesha@gmail.com  | Almas          | 7208226998   | 400612  |    0 |        |
-| C102        | Ariba         | Mumbra | ariba@gmail.com   | Zoha Apartment | 2345678906   | 400612  |    0 |        |
-| C103        | Arshiya       | thane  | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-| C104        | Arshiya       | diva   | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-| C105        | mannan        | kalyan | mannan@gmail.com  | universe       | 1234567890   | 400612  |   10 | goa    |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-5 rows in set (0.00 sec)
-
-mysql> insert into customer values('C104','Arshiya','diva','arshiya@gmail.com','grace','937261234','10654',11,'mumbai');
-ERROR 1062 (23000): Duplicate entry 'C104' for key 'customer.PRIMARY'
-mysql> insert into customer values('C106','Arshiya','diva','arshiya@gmail.com','grace','937261234','10654',11,'mumbai');
-Query OK, 1 row affected (0.00 sec)
-
-mysql> select * from customer where bill<10;
-+-------------+---------------+--------+------------------+----------------+--------------+---------+------+-------+
-| customer_id | customer_name | city   | email            | address        | phone_number | pincode | bill | state |
-+-------------+---------------+--------+------------------+----------------+--------------+---------+------+-------+
-| C101        | Ayesha        | Thane  | ayesha@gmail.com | Almas          | 7208226998   | 400612  |    0 |       |
-| C102        | Ariba         | Mumbra | ariba@gmail.com  | Zoha Apartment | 2345678906   | 400612  |    0 |       |
-+-------------+---------------+--------+------------------+----------------+--------------+---------+------+-------+
-2 rows in set (0.01 sec)
-
-mysql> select * from customer where bill>10;
-+-------------+---------------+------+-------------------+---------+--------------+---------+------+--------+
-| customer_id | customer_name | city | email             | address | phone_number | pincode | bill | state  |
-+-------------+---------------+------+-------------------+---------+--------------+---------+------+--------+
-| C106        | Arshiya       | diva | arshiya@gmail.com | grace   | 937261234    | 10654   |   11 | mumbai |
-+-------------+---------------+------+-------------------+---------+--------------+---------+------+--------+
+mysql> select avg(selling_price) from  products;
++--------------------+
+| avg(selling_price) |
++--------------------+
+|        4500.000000 |
++--------------------+
 1 row in set (0.00 sec)
 
-mysql> select * from customer where bill<=10;
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address        | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| C101        | Ayesha        | Thane  | ayesha@gmail.com  | Almas          | 7208226998   | 400612  |    0 |        |
-| C102        | Ariba         | Mumbra | ariba@gmail.com   | Zoha Apartment | 2345678906   | 400612  |    0 |        |
-| C103        | Arshiya       | thane  | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-| C104        | Arshiya       | diva   | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-| C105        | mannan        | kalyan | mannan@gmail.com  | universe       | 1234567890   | 400612  |   10 | goa    |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
+mysql> select count(*) from products;
++----------+
+| count(*) |
++----------+
+|        4 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> select max(stock) from products;
++------------+
+| max(stock) |
++------------+
+|         20 |
++------------+
+1 row in set (0.01 sec)
+
+mysql> select min(stock) from products;
++------------+
+| min(stock) |
++------------+
+|         13 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select * from products order by stock;
++------------+--------------+-------------+---------------+---------------+-------+
+| product_id | product_name | category    | selling_price | orignal_price | stock |
++------------+--------------+-------------+---------------+---------------+-------+
+| P105       | Webcan       | Electronics |       6000.00 |       5500.00 |    13 |
+| P102       | Table        | Furniture   |       8000.00 |       7500.00 |    14 |
+| P104       | jeans        | Clothing    |       2000.00 |       1500.00 |    14 |
+| P103       | Mobaile      | Electronics |       2000.00 |      17000.00 |    20 |
++------------+--------------+-------------+---------------+---------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from products order by stock desc;
++------------+--------------+-------------+---------------+---------------+-------+
+| product_id | product_name | category    | selling_price | orignal_price | stock |
++------------+--------------+-------------+---------------+---------------+-------+
+| P103       | Mobaile      | Electronics |       2000.00 |      17000.00 |    20 |
+| P102       | Table        | Furniture   |       8000.00 |       7500.00 |    14 |
+| P104       | jeans        | Clothing    |       2000.00 |       1500.00 |    14 |
+| P105       | Webcan       | Electronics |       6000.00 |       5500.00 |    13 |
++------------+--------------+-------------+---------------+---------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from  products order by stock desc limit 3;
++------------+--------------+-------------+---------------+---------------+-------+
+| product_id | product_name | category    | selling_price | orignal_price | stock |
++------------+--------------+-------------+---------------+---------------+-------+
+| P103       | Mobaile      | Electronics |       2000.00 |      17000.00 |    20 |
+| P102       | Table        | Furniture   |       8000.00 |       7500.00 |    14 |
+| P104       | jeans        | Clothing    |       2000.00 |       1500.00 |    14 |
++------------+--------------+-------------+---------------+---------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table Employee(employee_id varchar(10) not null primary key, employee_name varchar(20) not null,department varchar(20) not null ,salary int not null);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into Employee values('E101','Tejaswini','HR',40000),('E102','Swarnima','BSc',60000),('E103','Arti','CS',70000),('E104','Pratik','CA',90000),('E105','Om','AI',100000);
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from Employee;
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+| E101        | Tejaswini     | HR         |  40000 |
+| E102        | Swarnima      | BSc        |  60000 |
+| E103        | Arti          | CS         |  70000 |
+| E104        | Pratik        | CA         |  90000 |
+| E105        | Om            | AI         | 100000 |
++-------------+---------------+------------+--------+
 5 rows in set (0.00 sec)
 
-mysql> select * from customer where customer_name ='Ayesha' and bill= 10;
-Empty set (0.00 sec)
-
-mysql> select * from customer where customer_name ='Ayesha' or bill= 10;
-+-------------+---------------+--------+-------------------+----------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address  | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------+--------------+---------+------+--------+
-| C101        | Ayesha        | Thane  | ayesha@gmail.com  | Almas    | 7208226998   | 400612  |    0 |        |
-| C103        | Arshiya       | thane  | arshiya@gmail.com | grace    | 937261234    | 10654   |   10 | mumbai |
-| C104        | Arshiya       | diva   | arshiya@gmail.com | grace    | 937261234    | 10654   |   10 | mumbai |
-| C105        | mannan        | kalyan | mannan@gmail.com  | universe | 1234567890   | 400612  |   10 | goa    |
-+-------------+---------------+--------+-------------------+----------+--------------+---------+------+--------+
+mysql> desc Employee;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| employee_id   | varchar(10) | NO   | PRI | NULL    |       |
+| employee_name | varchar(20) | NO   |     | NULL    |       |
+| department    | varchar(20) | NO   |     | NULL    |       |
+| salary        | int         | NO   |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
 4 rows in set (0.00 sec)
 
-mysql> Select * from customer where customer_id between 'C101' to 'C104';
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to 'C104'' at line 1
-mysql> Select * from customer where customer_id between 'C101' and 'C104';
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address        | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| C101        | Ayesha        | Thane  | ayesha@gmail.com  | Almas          | 7208226998   | 400612  |    0 |        |
-| C102        | Ariba         | Mumbra | ariba@gmail.com   | Zoha Apartment | 2345678906   | 400612  |    0 |        |
-| C103        | Arshiya       | thane  | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-| C104        | Arshiya       | diva   | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-4 rows in set (0.00 sec)
+mysql> select * from Employee;
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+| E101        | Tejaswini     | HR         |  40000 |
+| E102        | Swarnima      | BSc        |  60000 |
+| E103        | Arti          | CS         |  70000 |
+| E104        | Pratik        | CA         |  90000 |
+| E105        | Om            | AI         | 100000 |
++-------------+---------------+------------+--------+
+5 rows in set (0.00 sec)
 
-mysql> Select * from customer where customer_id not between 'C101' and 'C104';
-+-------------+---------------+--------+-------------------+----------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address  | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------+--------------+---------+------+--------+
-| C105        | mannan        | kalyan | mannan@gmail.com  | universe | 1234567890   | 400612  |   10 | goa    |
-| C106        | Arshiya       | diva   | arshiya@gmail.com | grace    | 937261234    | 10654   |   11 | mumbai |
-+-------------+---------------+--------+-------------------+----------+--------------+---------+------+--------+
-2 rows in set (0.00 sec)
+mysql> select * from Employee;
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+| E101        | Tejaswini     | HR         |  40000 |
+| E102        | Swarnima      | BSc        |  60000 |
+| E103        | Arti          | CS         |  70000 |
+| E104        | Pratik        | CA         |  90000 |
+| E105        | Om            | AI         | 100000 |
++-------------+---------------+------------+--------+
+5 rows in set (0.00 sec)
 
-mysql> select * from customer;
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address        | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| C101        | Ayesha        | Thane  | ayesha@gmail.com  | Almas          | 7208226998   | 400612  |    0 |        |
-| C102        | Ariba         | Mumbra | ariba@gmail.com   | Zoha Apartment | 2345678906   | 400612  |    0 |        |
-| C103        | Arshiya       | thane  | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-| C104        | Arshiya       | diva   | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-| C105        | mannan        | kalyan | mannan@gmail.com  | universe       | 1234567890   | 400612  |   10 | goa    |
-| C106        | Arshiya       | diva   | arshiya@gmail.com | grace          | 937261234    | 10654   |   11 | mumbai |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-6 rows in set (0.00 sec)
+mysql> select department,count(*) as Total_Employee from employee group by department;
++------------+----------------+
+| department | Total_Employee |
++------------+----------------+
+| HR         |              1 |
+| BSc        |              1 |
+| CS         |              1 |
+| CA         |              1 |
+| AI         |              1 |
++------------+----------------+
+5 rows in set (0.00 sec)
 
-mysql> select * from customer where customer_id in ('C101','C104','C105');
-+-------------+---------------+--------+-------------------+----------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address  | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------+--------------+---------+------+--------+
-| C101        | Ayesha        | Thane  | ayesha@gmail.com  | Almas    | 7208226998   | 400612  |    0 |        |
-| C104        | Arshiya       | diva   | arshiya@gmail.com | grace    | 937261234    | 10654   |   10 | mumbai |
-| C105        | mannan        | kalyan | mannan@gmail.com  | universe | 1234567890   | 400612  |   10 | goa    |
-+-------------+---------------+--------+-------------------+----------+--------------+---------+------+--------+
-3 rows in set (0.00 sec)
+mysql> select department,sum(salary) as total_salary from employee group by department;
++------------+--------------+
+| department | total_salary |
++------------+--------------+
+| HR         |        40000 |
+| BSc        |        60000 |
+| CS         |        70000 |
+| CA         |        90000 |
+| AI         |       100000 |
++------------+--------------+
+5 rows in set (0.00 sec)
 
-mysql> select * from customer where customer_id not in ('C101','C104','C105');
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address        | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| C102        | Ariba         | Mumbra | ariba@gmail.com   | Zoha Apartment | 2345678906   | 400612  |    0 |        |
-| C103        | Arshiya       | thane  | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-| C106        | Arshiya       | diva   | arshiya@gmail.com | grace          | 937261234    | 10654   |   11 | mumbai |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-3 rows in set (0.00 sec)
+mysql> select department,avg(salary) as total_salary from employee group by department;
++------------+--------------+
+| department | total_salary |
++------------+--------------+
+| HR         |   40000.0000 |
+| BSc        |   60000.0000 |
+| CS         |   70000.0000 |
+| CA         |   90000.0000 |
+| AI         |  100000.0000 |
++------------+--------------+
+5 rows in set (0.01 sec)
 
-mysql> select * from customer where email is null;
+mysql> select department,avg(salary) as average_salary from employee group by department;
++------------+----------------+
+| department | average_salary |
++------------+----------------+
+| HR         |     40000.0000 |
+| BSc        |     60000.0000 |
+| CS         |     70000.0000 |
+| CA         |     90000.0000 |
+| AI         |    100000.0000 |
++------------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> select department, salary, count(*) from employee group by department,salary;
++------------+--------+----------+
+| department | salary | count(*) |
++------------+--------+----------+
+| HR         |  40000 |        1 |
+| BSc        |  60000 |        1 |
+| CS         |  70000 |        1 |
+| CA         |  90000 |        1 |
+| AI         | 100000 |        1 |
++------------+--------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Employee;
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+| E101        | Tejaswini     | HR         |  40000 |
+| E102        | Swarnima      | BSc        |  60000 |
+| E103        | Arti          | CS         |  70000 |
+| E104        | Pratik        | CA         |  90000 |
+| E105        | Om            | AI         | 100000 |
++-------------+---------------+------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select department, count(*) as total_employee from employee group by department having count(*) > 1;
 Empty set (0.00 sec)
 
-mysql> select * from customer where email is not null;
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| customer_id | customer_name | city   | email             | address        | phone_number | pincode | bill | state  |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-| C101        | Ayesha        | Thane  | ayesha@gmail.com  | Almas          | 7208226998   | 400612  |    0 |        |
-| C102        | Ariba         | Mumbra | ariba@gmail.com   | Zoha Apartment | 2345678906   | 400612  |    0 |        |
-| C103        | Arshiya       | thane  | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-| C104        | Arshiya       | diva   | arshiya@gmail.com | grace          | 937261234    | 10654   |   10 | mumbai |
-| C105        | mannan        | kalyan | mannan@gmail.com  | universe       | 1234567890   | 400612  |   10 | goa    |
-| C106        | Arshiya       | diva   | arshiya@gmail.com | grace          | 937261234    | 10654   |   11 | mumbai |
-+-------------+---------------+--------+-------------------+----------------+--------------+---------+------+--------+
-6 rows in set (0.00 sec)
+mysql> select department, sum(salary) as total_salary from employee group by department having sum(salary) > 8000;
++------------+--------------+
+| department | total_salary |
++------------+--------------+
+| HR         |        40000 |
+| BSc        |        60000 |
+| CS         |        70000 |
+| CA         |        90000 |
+| AI         |       100000 |
++------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select department, sum(salary) as total_salary from employee group by department having sum(salary) > 2000;
++------------+--------------+
+| department | total_salary |
++------------+--------------+
+| HR         |        40000 |
+| BSc        |        60000 |
+| CS         |        70000 |
+| CA         |        90000 |
+| AI         |       100000 |
++------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select department, sum(salary) as total_salary from employee group by department having sum(salary) > 5000;
++------------+--------------+
+| department | total_salary |
++------------+--------------+
+| HR         |        40000 |
+| BSc        |        60000 |
+| CS         |        70000 |
+| CA         |        90000 |
+| AI         |       100000 |
++------------+--------------+
+5 rows in set (0.00 sec)
 
 mysql>
